@@ -3,7 +3,7 @@ pipeline {
         label 'jenkins-agent'
     }
     stages {
-        stage('Publish') {
+        stage('Build') {
             steps {
                 sh "docker login --username=$username --password=$password nexus.sarrafex.com:8087"
                 sh "docker build -t ${env.JOB_NAME.replace('.','/')}:latest ."
