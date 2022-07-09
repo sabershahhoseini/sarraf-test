@@ -6,6 +6,11 @@ pipeline {
         stage('Publish') {
             steps {
                 sh "docker login --username=$username --password=$password nexus.sarrafex.com:8087"
+                sh "docker build -t ${env.JOB_NAME.replace('.','/')}:latest ."
+            }
+        }
+        stage('Publish') {
+            steps {
                 sh "docker image tag ${env.JOB_NAME.replace('.','/')}:latest nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
                 sh "docker image push nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
                 sh "docker rmi -f ${env.JOB_NAME.replace('.','/')}:latest nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
