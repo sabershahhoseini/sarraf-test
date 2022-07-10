@@ -16,7 +16,7 @@ pipeline {
         stage('Publish') {
             steps {
                 updateGitlabCommitStatus name: 'Publish', state: 'pending'
-
+                sh "docker login --username=$username --password=$password nexus.sarrafex.com:8087"
                 sh "docker image tag ${env.JOB_NAME.replace('.','/')}:latest nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
                 sh "docker image push nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
                 sh "docker rmi -f ${env.JOB_NAME.replace('.','/')}:latest nexus.sarrafex.com:8087/repository/nexus-sarrafex/${env.JOB_NAME.replace('.','/')}:latest"
